@@ -50,58 +50,220 @@ const tituloModalPreguntas = document.getElementById("tituloModalPreguntas");
 const descripcionModalPreguntas = document.getElementById("descripcionModalPreguntas");
 const listaPreguntasAyuda = document.getElementById("listaPreguntasAyuda");
 
-const componentesElectronicos = [
-    "Resistencia",
-    "Potenciómetro",
-    "Capacitor cerámico",
-    "Capacitor electrolítico",
-    "Diodo",
-    "Diodo Zener",
-    "LED",
-    "Transistor",
-    "Transformador",
-    "Relé",
-    "Fusible",
-    "Interruptor",
-    "Pulsador",
-    "LDR",
-    "Temporizador 555",
-    "Amplificador operacional",
-    "Microcontrolador",
-    "Arduino",
-    "Protoboard",
-    "Placa PCB",
-    "Cable jumper",
-    "Bornera",
-    "Conector USB",
-    "Conector Jack",
-    "Pila",
-    "Batería",
-    "Portapilas",
-    "Fuente de alimentación",
-    "Regulador de voltaje",
-    "Puente rectificador",
-    "Display de 7 segmentos",
-    "Display LCD",
-    "Matriz LED",
-    "Parlante",
-    "Micrófono",
-    "Motor DC",
-    "Servomotor",
-    "Motor paso a paso",
-    "Sensor ultrasónico",
-    "Sensor infrarrojo",
-    "Sensor de temperatura",
-    "Sensor de humedad",
-    "Sensor de movimiento",
-    "Sensor de luz",
-    "Sensor de sonido",
-    "Joystick",
-    "Cooler",
-    "Antena",
-    "Bobina",
-    "Plaqueta"
-];
+// Elementos del Modal de Ficha Técnica
+const modalFicha = document.getElementById("modalFichaComponente");
+const btnCerrarFicha = document.getElementById("btnCerrarFicha");
+const btnCerrarFichaAbajo = document.getElementById("btnCerrarFichaAbajo");
+const tituloFicha = document.getElementById("tituloFicha");
+const imagenFicha = document.getElementById("imagenFicha");
+const descripcionFicha = document.getElementById("descripcionFicha");
+const placeholderFicha = document.getElementById("placeholderFicha");
+
+// Diccionario con fotografías reales de stock sin bloqueo de Hotlink
+const datosComponentes = {
+    "Resistencia": {
+        descripcion: "Componente pasivo que opone resistencia al paso de la corriente eléctrica. Se mide en Ohms (Ω) y tiene franjas de colores para indicar su valor.",
+        imagen: "./imagenes/resistencia.jpg"
+    },
+    "Potenciómetro": {
+        descripcion: "Resistencia variable manualmente mediante una perilla o eje giratorio. Posee tres terminales y se usa frecuentemente como divisor de tensión o control de volumen.",
+        imagen: "./imagenes/potenciometro.jpg"
+    },
+    "Capacitor cerámico": {
+        descripcion: "Almacena pequeñas cantidades de carga eléctrica temporalmente. Es un componente no polarizado (tipo lenteja) y se suele usar para desacople y filtrar ruidos en altas frecuencias.",
+        imagen: "./imagenes/capacitor-ceramico.jpg"
+    },
+    "Capacitor electrolítico": {
+        descripcion: "Almacena energía en forma de campo eléctrico con valores de capacitancia altos. Posee polaridad obligatoria (+ y -) que debe respetarse para evitar que se dañe.",
+        imagen: "./imagenes/capacitor-electrolitico.jpg"
+    },
+    "Diodo": {
+        descripcion: "Semiconductor de dos terminales (ánodo y cátodo) que permite el flujo de corriente en un solo sentido, bloqueándolo en dirección opuesta.",
+        imagen: "./imagenes/diodo.jpg"
+    },
+    "Diodo Zener": {
+        descripcion: "Diodo especial diseñado para trabajar polarizado en inversa conduciendo a un voltaje específico constante. Se usa comúnmente como regulador o referencia de tensión.",
+        imagen: "./imagenes/diodo-zener.jpg"
+    },
+    "LED": {
+        descripcion: "Diodo Emisor de Luz. Semiconductor que emite radiación luminosa visible cuando está polarizado directamente y es atravesado por una pequeña corriente.",
+        imagen: "./imagenes/led.jpg"
+    },
+    "Transistor": {
+        descripcion: "Componente semiconductor de 3 terminales (Base, Colector, Emisor) clave en la electrónica. Funciona como amplificador o interruptor conmutado electrónicamente.",
+        imagen: "./imagenes/transistor.jpg"
+    },
+    "Transformador": {
+        descripcion: "Dispositivo electromagnético formado por bobinas acopladas que eleva o reduce niveles de voltaje en corriente alterna (CA) conservando la potencia.",
+        imagen: "./imagenes/transformador.jpg"
+    },
+    "Relé": {
+        descripcion: "Interruptor electromagnético que utiliza una bobina para abrir o cerrar contactos mecánicos de alta tensión/corriente de forma aislada a partir de una señal débil.",
+        imagen: "./imagenes/rele.jpg"
+    },
+    "Fusible": {
+        descripcion: "Dispositivo de seguridad pasivo que contiene un filamento metálico que se funde cuando la corriente excede su valor nominal, abriendo el circuito.",
+        imagen: "./imagenes/fusible.jpg"
+    },
+    "Interruptor": {
+        descripcion: "Mecanismo que mantiene fija la apertura o cierre manual del circuito eléctrico (posición permanente de encendido o apagado).",
+        imagen: "./imagenes/interruptor.jpg"
+    },
+    "Pulsador": {
+        descripcion: "Dispositivo mecánico momentáneo: solo permite o corta el paso de corriente mientras se lo mantiene presionado manualmente.",
+        imagen: "./imagenes/pulsador.jpg"
+    },
+    "LDR": {
+        descripcion: "Resistencia dependiente de la luz (fotorresistencia). Su resistencia óhmica disminuye sensiblemente a medida que aumenta la intensidad lumínica sobre su superficie.",
+        imagen: "./imagenes/ldr.jpg"
+    },
+    "Temporizador 555": {
+        descripcion: "Clásico circuito integrado de 8 patas muy utilizado para generar pulsos precisos, oscilaciones de onda cuadrada o retardos de tiempo monoestables y astables.",
+        imagen: "./imagenes/temporizador-555.jpg"
+    },
+    "Amplificador operacional": {
+        descripcion: "Circuito integrado de ganancia diferencial extremadamente alta, fundamental en el tratamiento, comparación y amplificación de señales analógicas.",
+        imagen: "./imagenes/amplificador-operacional.jpg"
+    },
+    "Microcontrolador": {
+        descripcion: "Circuito integrado programable que concentra procesador, memoria RAM/Flash y pines de entrada y salida para gobernar un sistema embebido.",
+        imagen: "./imagenes/microcontrolador.jpg"
+    },
+    "Arduino": {
+        descripcion: "Placa de desarrollo de hardware libre con microcontrolador y pines accesibles para prototipar proyectos y conectar sensores y actuadores.",
+        imagen: "./imagenes/arduino.jpg"
+    },
+    "Protoboard": {
+        descripcion: "Placa de pruebas reutilizable con buses y pistas internas que permite interconectar componentes sin soldar para probar circuitos.",
+        imagen: "./imagenes/protoboard.jpg"
+    },
+    "Placa PCB": {
+        descripcion: "Circuito impreso con pistas de cobre sobre un sustrato aislante rígido donde los componentes electrónicos van soldados de manera definitiva.",
+        imagen: "./imagenes/placa-pcb.jpg"
+    },
+    "Cable jumper": {
+        descripcion: "Conductor eléctrico flexible con conectores macho o hembra diseñado para unir terminales en protoboards o módulos electrónicos.",
+        imagen: "./imagenes/cable-jumper.jpg"
+    },
+    "Bornera": {
+        descripcion: "Bloque de terminales con tornillos que brinda una conexión mecánica y eléctrica firme y desmontable para cables de alimentación o señal.",
+        imagen: "./imagenes/bornera.jpg"
+    },
+    "Conector USB": {
+        descripcion: "Puerto o conector estandarizado para alimentación eléctrica y transmisión serie de datos digitales con computadoras y módulos.",
+        imagen: "./imagenes/conector-usb.jpg"
+    },
+    "Conector Jack": {
+        descripcion: "Conector cilíndrico comúnmente empleado para alimentación en corriente continua (Jack DC) o conexión de señales de audio analógicas.",
+        imagen: "./imagenes/conector-jack.jpg"
+    },
+    "Pila": {
+        descripcion: "Celda electroquímica no recargable (primaria) que genera energía eléctrica continua mediante una reacción química irreversible.",
+        imagen: "./imagenes/pila.jpg"
+    },
+    "Batería": {
+        descripcion: "Acumulador de energía electroquímica recargable (como celdas de Li-Ion, Plomo o bloques de 9V) capaz de alimentar cargas prolongadamente.",
+        imagen: "./imagenes/bateria.jpg"
+    },
+    "Portapilas": {
+        descripcion: "Soporte plástico con contactos elásticos y cables diseñado para sujetar y conectar en serie o paralelo pilas estándar.",
+        imagen: "./imagenes/portapilas.jpg"
+    },
+    "Fuente de alimentación": {
+        descripcion: "Equipo o módulo que convierte la tensión de la red eléctrica de alterna (ej. 220V CA) en tensión continua estable y regulada.",
+        imagen: "./imagenes/fuente-de-alimentacion.jpg"
+    },
+    "Regulador de voltaje": {
+        descripcion: "Circuito integrado (como la familia 7805) que mantiene un nivel constante de tensión continua en su salida aunque varíe la entrada.",
+        imagen: "./imagenes/regulador-de-voltaje.jpg"
+    },
+    "Puente rectificador": {
+        descripcion: "Arreglo de cuatro diodos interconectados que convierte una onda senoidal de corriente alterna en corriente continua pulsante.",
+        imagen: "./imagenes/puente-rectificador.jpg"
+    },
+    "Display de 7 segmentos": {
+        descripcion: "Módulo visual compuesto por 7 segmentos LED individuales que permite formar dígitos numéricos del 0 al 9 y algunos caracteres.",
+        imagen: "./imagenes/display-7-segmentos.jpg"
+    },
+    "Display LCD": {
+        descripcion: "Pantalla de cristal líquido (frecuentemente de 16x2 caracteres) utilizada para mostrar texto alfanumérico legible mediante un microcontrolador.",
+        imagen: "./imagenes/display-lcd.jpg"
+    },
+    "Matriz LED": {
+        descripcion: "Cuadrícula ordenada de diodos LED (típicamente 8x8) que permite dibujar gráficos, íconos o caracteres mediante barrido de filas y columnas.",
+        imagen: "./imagenes/matriz-led.jpg"
+    },
+    "Parlante": {
+        descripcion: "Transductor electroacústico que convierte señales eléctricas variables en ondas sonoras audibles mediante una bobina móvil y un imán permanente.",
+        imagen: "./imagenes/parlante.jpg"
+    },
+    "Micrófono": {
+        descripcion: "Transductor que capta las ondas acústicas del aire y las transforma en variaciones proporcionales de señal eléctrica.",
+        imagen: "./imagenes/microfono.jpg"
+    },
+    "Motor DC": {
+        descripcion: "Máquina eléctrica rotativa que convierte corriente continua en movimiento mecánico giratorio continuo en un eje.",
+        imagen: "./imagenes/motor-dc.jpg"
+    },
+    "Servomotor": {
+        descripcion: "Motor con caja reductora y sensor interno que permite controlar con exactitud la posición angular de su eje mediante pulsos PWM.",
+        imagen: "./imagenes/servomotor.jpg"
+    },
+    "Motor paso a paso": {
+        descripcion: "Motor eléctrico que divide una rotación completa en pasos angulares precisos según la secuencia de pulsos enviada a sus bobinas.",
+        imagen: "./imagenes/motor-paso-a-paso.jpg"
+    },
+    "Sensor ultrasónico": {
+        descripcion: "Módulo (como el HC-SR04) que emite un pulso de ultrasonido y mide el tiempo de rebote del eco para calcular distancias a objetos.",
+        imagen: "./imagenes/sensor-ultrasonico.jpg"
+    },
+    "Sensor infrarrojo": {
+        descripcion: "Sensor que emite y recibe radiación infrarroja no visible; muy utilizado como sensor de proximidad, detector de línea o barrera óptica.",
+        imagen: "./imagenes/sensor-infrarrojo.jpg"
+    },
+    "Sensor de temperatura": {
+        descripcion: "Transductor (ej. LM35 o termistor) que entrega un voltaje analógico o digital proporcional a la temperatura ambiente medida.",
+        imagen: "./imagenes/sensor-de-temperatura.jpg"
+    },
+    "Sensor de humedad": {
+        descripcion: "Dispositivo (ej. DHT11) que mide la cantidad relativa de vapor de agua en el aire y la traduce a una señal eléctrica legible.",
+        imagen: "./imagenes/sensor-de-humedad.jpg"
+    },
+    "Sensor de movimiento": {
+        descripcion: "Sensor pasivo infrarrojo (PIR) que detecta la variación de radiación térmica producida por el desplazamiento de personas.",
+        imagen: "./imagenes/sensor-de-movimiento.jpg"
+    },
+    "Sensor de luz": {
+        descripcion: "Módulo electrónico analógico o digital que mide con exactitud la intensidad o luminosidad ambiental usando un fototransistor o LDR.",
+        imagen: "./imagenes/sensor-de-luz.jpg"
+    },
+    "Sensor de sonido": {
+        descripcion: "Módulo con cápsula de micrófono electret y amplificador integrado que detecta aplausos, ruidos o niveles de sonido circundante.",
+        imagen: "./imagenes/sensor-de-sonido.jpg"
+    },
+    "Joystick": {
+        descripcion: "Mando analógico de control formado por dos potenciómetros perpendiculares (ejes X e Y) y un pulsador mecánico integrado.",
+        imagen: "./imagenes/joystick.jpg"
+    },
+    "Cooler": {
+        descripcion: "Ventilador accionado por un motor continuo DC diseñado para disipar calor forzando aire sobre componentes electrónicos calientes.",
+        imagen: "./imagenes/cooler.jpg"
+    },
+    "Antena": {
+        descripcion: "Elemento conductor preparado para emitir o captar ondas electromagnéticas de radiofrecuencia (RF, Wi-Fi, Bluetooth) en el espacio.",
+        imagen: "./imagenes/antena.jpg"
+    },
+    "Bobina": {
+        descripcion: "Inductor pasivo formado por espiras de alambre de cobre que almacena energía en forma de campo magnético cuando circula corriente.",
+        imagen: "./imagenes/bobina.jpg"
+    },
+    "Plaqueta": {
+        descripcion: "Placa experimental perforada estándar o fenólica (protoboard rígida) donde se pueden soldar componentes para circuitos definitivos.",
+        imagen: "./imagenes/plaqueta.jpg"
+    }
+};
+
+const componentesElectronicos = Object.keys(datosComponentes);
 
 let jugadores = {};
 let opcionesSeleccionadas = [];
@@ -118,7 +280,6 @@ const CLAVE_SESION = "queSoySesionActual";
 // ==========================================
 // CONFIGURACIÓN DE RONDAS
 // ==========================================
-// 7 rondas normales de preguntas + la 8.ª para arriesgar.
 const CANTIDAD_RONDAS_PREGUNTAS = 7;
 const RONDA_FINAL = CANTIDAD_RONDAS_PREGUNTAS + 1;
 
@@ -193,154 +354,80 @@ const preguntasAyuda = {
         "¿Sirve para que el circuito muestre un resultado?"
     ],
     intermedia: [
-
-    "¿Es un componente pasivo?",
-
-    "¿Es un semiconductor?",
-
-    "¿Tiene polaridad?",
-
-    "¿Tiene más de dos terminales?",
-
-    "¿Sirve para limitar o controlar la corriente?",
-
-    "¿Sirve para controlar o estabilizar la tensión?",
-
-    "¿Puede almacenar energía eléctrica?",
-
-    "¿Puede controlar el paso de corriente?",
-
-    "¿Puede funcionar como interruptor electrónico?",
-
-    "¿Puede recibir una señal y controlar otra?",
-
-    "¿Convierte energía eléctrica en movimiento?",
-
-    "¿Convierte una magnitud física en una señal eléctrica?",
-
-    "¿Puede transformar energía eléctrica en otra forma de energía?",
-
-    "¿Se utiliza para trabajar con señales eléctricas?",
-
-    "¿Puede formar parte de una etapa de potencia?",
-
-    "¿Se utiliza para amplificar o controlar una señal?",
-
-    "¿Se utiliza para proteger otros componentes del circuito?",
-
-    "¿Puede formar parte de una fuente de alimentación?",
-
-    "¿Se utiliza para convertir o modificar una tensión?",
-
-    "¿Puede utilizarse para controlar una carga?",
-
-    "¿Utiliza electromagnetismo para funcionar?",
-
-    "¿Es un componente de entrada del circuito?",
-
-    "¿Es un componente de salida del circuito?",
-
-    "¿Puede utilizarse como parte de un circuito de control?",
-
-    "¿Puede interactuar con una magnitud del ambiente?",
-
-    "¿Entrega una señal eléctrica como resultado de una medición?",
-
-    "¿Puede ser controlado mediante una señal eléctrica?",
-
-    "¿Puede trabajar junto con un microcontrolador?",
-
-    "¿Puede utilizarse en circuitos analógicos?",
-
-    "¿Puede utilizarse en circuitos digitales?",
-
-    "¿Se utiliza para conectar distintas partes de un circuito?",
-
-    "¿Puede utilizarse para visualizar información?",
-
-    "¿Puede utilizarse para ingresar información al circuito?",
-
-    "¿Puede cambiar su comportamiento dependiendo de una señal de entrada?",
-
-    "¿Su función principal es controlar otra parte del circuito?",
-
-    "¿Puede encontrarse tanto en proyectos simples como en circuitos más complejos?"
-
-
+        "¿Es un componente pasivo?",
+        "¿Es un semiconductor?",
+        "¿Tiene polaridad?",
+        "¿Tiene más de dos terminales?",
+        "¿Sirve para limitar o controlar la corriente?",
+        "¿Sirve para controlar o estabilizar la tensión?",
+        "¿Puede almacenar energía eléctrica?",
+        "¿Puede controlar el paso de corriente?",
+        "¿Puede funcionar como interruptor electrónico?",
+        "¿Puede recibir una señal y controlar otra?",
+        "¿Convierte energía eléctrica en movimiento?",
+        "¿Convierte una magnitud física en una señal eléctrica?",
+        "¿Puede transformar energía eléctrica en otra forma de energía?",
+        "¿Se utiliza para trabajar con señales eléctricas?",
+        "¿Puede formar parte de una etapa de potencia?",
+        "¿Se utiliza para amplificar o controlar una señal?",
+        "¿Se utiliza para proteger otros componentes del circuito?",
+        "¿Puede formar parte de una fuente de alimentación?",
+        "¿Se utiliza para convertir o modificar una tensión?",
+        "¿Puede utilizarse para controlar una carga?",
+        "¿Utiliza electromagnetismo para funcionar?",
+        "¿Es un componente de entrada del circuito?",
+        "¿Es un componente de salida del circuito?",
+        "¿Puede utilizarse como parte de un circuito de control?",
+        "¿Puede interactuar con una magnitud del ambiente?",
+        "¿Entrega una señal eléctrica como resultado de una medición?",
+        "¿Puede ser controlado mediante una señal eléctrica?",
+        "¿Puede trabajar junto con un microcontrolador?",
+        "¿Puede utilizarse en circuitos analógicos?",
+        "¿Puede utilizarse en circuitos digitales?",
+        "¿Se utiliza para conectar distintas partes de un circuito?",
+        "¿Puede utilizarse para visualizar información?",
+        "¿Puede utilizarse para ingresar información al circuito?",
+        "¿Puede cambiar su comportamiento dependiendo de una señal de entrada?",
+        "¿Su función principal es controlar otra parte del circuito?",
+        "¿Puede encontrarse tanto en proyectos simples como en circuitos más complejos?"
     ],
     tecnica: [
-
-    "¿Su funcionamiento depende de materiales semiconductores?",
-
-    "¿Trabaja principalmente con señales analógicas?",
-
-    "¿Trabaja principalmente con señales digitales?",
-
-    "¿Puede trabajar tanto con señales analógicas como digitales?",
-
-    "¿Puede conmutar una carga mediante una señal de control?",
-
-    "¿Puede utilizarse en una etapa de amplificación?",
-
-    "¿Puede utilizarse en una etapa de potencia?",
-
-    "¿Puede controlar una corriente mayor a partir de una señal pequeña?",
-
-    "¿Puede modificar el comportamiento de una señal eléctrica?",
-
-    "¿Puede utilizarse para regular una magnitud eléctrica?",
-
-    "¿Puede almacenar energía eléctrica temporalmente?",
-
-    "¿Su funcionamiento depende de campos electromagnéticos?",
-
-    "¿Puede transformar energía eléctrica en energía mecánica?",
-
-    "¿Puede transformar energía eléctrica en otra forma de energía?",
-
-    "¿Puede transformar una magnitud física en una señal eléctrica?",
-
-    "¿Puede ser controlado mediante una señal PWM?",
-
-    "¿Puede recibir una señal de control para modificar su funcionamiento?",
-
-    "¿Puede utilizarse como elemento de entrada en un sistema de control?",
-
-    "¿Puede utilizarse como elemento de salida en un sistema de control?",
-
-    "¿Puede formar parte de un sistema de control automático?",
-
-    "¿Puede trabajar junto con un microcontrolador?",
-
-    "¿Puede enviar información a un microcontrolador?",
-
-    "¿Puede recibir órdenes de un microcontrolador?",
-
-    "¿Tiene entradas y salidas eléctricas diferenciadas?",
-
-    "¿Puede procesar señales o información?",
-
-    "¿Puede ejecutar instrucciones programadas?",
-
-    "¿Puede utilizarse para adaptar una señal antes de enviarla a otra parte del circuito?",
-
-    "¿Puede intervenir en la conversión entre corriente alterna y continua?",
-
-    "¿Puede formar parte de una etapa de regulación de tensión?",
-
-    "¿Puede utilizarse para filtrar o estabilizar una señal eléctrica?",
-
-    "¿Puede proporcionar aislamiento entre distintas partes de un circuito?",
-
-    "¿Puede utilizarse para proteger una etapa electrónica?",
-
-    "¿Su comportamiento eléctrico puede cambiar según una condición externa?",
-
-    "¿Puede utilizarse para controlar dispositivos de mayor potencia?",
-
-    "¿Es habitual encontrarlo en sistemas electrónicos automatizados?"
-
-]
+        "¿Su funcionamiento depende de materiales semiconductores?",
+        "¿Trabaja principalmente con señales analógicas?",
+        "¿Trabaja principalmente con señales digitales?",
+        "¿Puede trabajar tanto con señales analógicas como digitales?",
+        "¿Puede conmutar una carga mediante una señal de control?",
+        "¿Puede utilizarse en una etapa de amplificación?",
+        "¿Puede utilizarse en una etapa de potencia?",
+        "¿Puede controlar una corriente mayor a partir de una señal pequeña?",
+        "¿Puede modificar el comportamiento de una señal eléctrica?",
+        "¿Puede utilizarse para regular una magnitud eléctrica?",
+        "¿Puede almacenar energía eléctrica temporalmente?",
+        "¿Su funcionamiento depende de campos electromagnéticos?",
+        "¿Puede transformar energía eléctrica en energía mecánica?",
+        "¿Puede transformar energía eléctrica en otra forma de energía?",
+        "¿Puede transformar una magnitud física en una señal eléctrica?",
+        "¿Puede ser controlado mediante una señal PWM?",
+        "¿Puede recibir una señal de control para modificar su funcionamiento?",
+        "¿Puede utilizarse como elemento de entrada en un sistema de control?",
+        "¿Puede utilizarse como elemento de salida en un sistema de control?",
+        "¿Puede formar parte de un sistema de control automático?",
+        "¿Puede trabajar junto con un microcontrolador?",
+        "¿Puede enviar información a un microcontrolador?",
+        "¿Puede recibir órdenes de un microcontrolador?",
+        "¿Tiene entradas y salidas eléctricas diferenciadas?",
+        "¿Puede procesar señales o información?",
+        "¿Puede ejecutar instrucciones programadas?",
+        "¿Puede utilizarse para adaptar una señal antes de enviarla a otra parte del circuito?",
+        "¿Puede intervenir en la conversión entre corriente alterna y continua?",
+        "¿Puede formar parte de una etapa de regulación de tensión?",
+        "¿Puede utilizarse para filtrar o estabilizar una señal eléctrica?",
+        "¿Puede proporcionar aislamiento entre distintas partes de un circuito?",
+        "¿Puede utilizarse para proteger una etapa electrónica?",
+        "¿Su comportamiento eléctrico puede cambiar según una condición externa?",
+        "¿Puede utilizarse para controlar dispositivos de mayor potencia?",
+        "¿Es habitual encontrarlo en sistemas electrónicos automatizados?"
+    ]
 };
 
 function cambiarPantalla(pantalla) {
@@ -377,11 +464,13 @@ function generarOpciones() {
     return mezclarArray(componentesElectronicos);
 }
 
-
 function obtenerPreguntasAleatorias(lista, cantidad = 7) {
     return mezclarArray(lista).slice(0, Math.min(cantidad, lista.length));
 }
 
+// ==========================================
+// VENTANA MODAL DE PREGUNTAS
+// ==========================================
 function abrirPreguntas(nivel) {
     nivelPreguntasActual = nivel;
 
@@ -425,7 +514,6 @@ function mostrarPreguntasDelNivel() {
         opcion.type = "button";
         opcion.textContent = pregunta;
 
-        // Al tocar una pregunta, solamente se resalta para poder leerla mejor.
         opcion.addEventListener("click", () => {
             document.querySelectorAll(".pregunta-opcion.seleccionada")
                 .forEach(elemento => elemento.classList.remove("seleccionada"));
@@ -456,17 +544,67 @@ modalPreguntas.addEventListener("click", evento => {
     }
 });
 
-document.addEventListener("keydown", evento => {
-    if (evento.key === "Escape" && modalPreguntas.classList.contains("abierto")) {
-        cerrarPreguntas();
+// ==========================================
+// VENTANA MODAL DE FICHA TÉCNICA
+// ==========================================
+function abrirFichaComponente(nombre) {
+    const info = datosComponentes[nombre] || {
+        descripcion: "Componente de laboratorio electrónico.",
+        imagen: ""
+    };
+
+    tituloFicha.textContent = nombre;
+    descripcionFicha.textContent = info.descripcion;
+
+    if (info.imagen) {
+        imagenFicha.src = info.imagen;
+        imagenFicha.alt = nombre;
+        imagenFicha.style.display = "block";
+        imagenFicha.classList.add("cargada");
+        placeholderFicha.style.display = "none";
+
+        imagenFicha.onerror = () => {
+            // Si falta el archivo en la carpeta imagenes/, avisa qué archivo falta
+            placeholderFicha.innerHTML = `<span style="font-size: 0.9rem; color: #f87171;">Falta archivo: ${info.imagen}</span>`;
+            placeholderFicha.style.display = "flex";
+            imagenFicha.style.display = "none";
+        };
+    } else {
+        imagenFicha.style.display = "none";
+        placeholderFicha.style.display = "none";
+    }
+
+    modalFicha.classList.add("abierto");
+    modalFicha.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-abierto");
+}
+
+function cerrarFichaComponente() {
+    modalFicha.classList.remove("abierto");
+    modalFicha.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-abierto");
+    imagenFicha.src = "";
+}
+
+btnCerrarFicha.addEventListener("click", cerrarFichaComponente);
+btnCerrarFichaAbajo.addEventListener("click", cerrarFichaComponente);
+
+modalFicha.addEventListener("click", evento => {
+    if (evento.target === modalFicha) {
+        cerrarFichaComponente();
     }
 });
 
+document.addEventListener("keydown", evento => {
+    if (evento.key === "Escape") {
+        if (modalPreguntas.classList.contains("abierto")) cerrarPreguntas();
+        if (modalFicha.classList.contains("abierto")) cerrarFichaComponente();
+    }
+});
 
 // ==========================================
 // SESIÓN Y RECONEXIÓN
 // ==========================================
-
 function guardarSesion(nombre) {
     try {
         localStorage.setItem(
@@ -478,8 +616,6 @@ function guardarSesion(nombre) {
             })
         );
     } catch (error) {
-        // La partida puede seguir funcionando aunque el navegador
-        // no permita guardar la reconexión local.
         console.warn("No se pudo guardar la sesión para reconectar:", error);
     }
 
@@ -543,7 +679,7 @@ async function reconectarSesionGuardada() {
 
         if (!jugador) {
             borrarSesion();
-            alert("Ya no pertenecés a esa sala. Es posible que hayas sido expulsado.");
+            alert("Ya no pertenecés a esa sala.");
             return;
         }
 
@@ -560,11 +696,7 @@ async function reconectarSesionGuardada() {
 }
 
 btnReconectar.addEventListener("click", reconectarSesionGuardada);
-
-btnOlvidarSesion.addEventListener("click", () => {
-    borrarSesion();
-});
-
+btnOlvidarSesion.addEventListener("click", () => borrarSesion());
 actualizarPanelReconexion();
 
 btnCrearSala.addEventListener("click", async () => {
@@ -693,7 +825,6 @@ function escucharSala() {
         const sala = snapshot.val();
         jugadores = sala.jugadores || {};
 
-        // Si mi jugador desapareció de Firebase, fui expulsado.
         if (
             jugadorActualId &&
             !jugadores[jugadorActualId]
@@ -742,7 +873,6 @@ function actualizarLobby(sala) {
 
         fila.appendChild(nombre);
 
-        // Solo el anfitrión puede expulsar y nunca puede expulsarse a sí mismo.
         if (soyAnfitrion && id !== sala.anfitrionId) {
             const btnExpulsar = document.createElement("button");
             btnExpulsar.classList.add("btn-expulsar");
@@ -819,10 +949,8 @@ async function iniciarPartidaFirebase() {
             opcionesSeleccionadas: opciones,
             revelados: false,
             ronda: Date.now(),
-
             rondaNumero: 1,
             rondasTerminadas: false,
-
             ordenTurnos: ordenTurnos,
             turnoActual: 0
         };
@@ -896,7 +1024,24 @@ function mostrarGrilla() {
 
         const casilla = document.createElement("div");
         casilla.classList.add("numero");
-        casilla.textContent = opcion;
+
+        const textoNombre = document.createElement("span");
+        textoNombre.classList.add("texto-componente");
+        textoNombre.textContent = opcion;
+        casilla.appendChild(textoNombre);
+
+        const btnInfo = document.createElement("button");
+        btnInfo.type = "button";
+        btnInfo.classList.add("btn-info-componente");
+        btnInfo.innerHTML = "ℹ️";
+        btnInfo.title = "Ver qué es";
+
+        btnInfo.addEventListener("click", (evento) => {
+            evento.stopPropagation();
+            abrirFichaComponente(opcion);
+        });
+
+        casilla.appendChild(btnInfo);
 
         if (elementosOtros.has(clave)) {
             casilla.classList.add("numero-otro-jugador");
@@ -955,7 +1100,7 @@ async function nuevaPartidaFirebase() {
         const snapshot = await get(salaRef);
 
         if (!snapshot.exists()) {
-            alert("La sala ya no existe.");
+            alert("La sala no existe.");
             return;
         }
 
@@ -979,10 +1124,8 @@ async function nuevaPartidaFirebase() {
             opcionesSeleccionadas: nuevasOpciones,
             revelados: false,
             ronda: Date.now(),
-
             rondaNumero: 1,
             rondasTerminadas: false,
-
             ordenTurnos: nuevoOrdenTurnos,
             turnoActual: 0
         };
@@ -1016,7 +1159,7 @@ btnVolverSala.addEventListener("click", async () => {
         const snapshot = await get(salaRef);
 
         if (!snapshot.exists()) {
-            alert("La sala ya no existe.");
+            alert("La sala no existe.");
             return;
         }
 
@@ -1046,7 +1189,6 @@ btnVolverSala.addEventListener("click", async () => {
 // ==========================================
 // TURNOS Y RONDAS
 // ==========================================
-
 function mostrarTurnoActual(sala) {
     const orden = sala.ordenTurnos || [];
     const indice = sala.turnoActual ?? 0;
@@ -1242,4 +1384,3 @@ btnForzarTurno.addEventListener("click", async () => {
         console.error("Error forzando turno:", error);
     }
 });
-
