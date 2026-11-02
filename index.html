@@ -102,7 +102,7 @@
 
       <!-- GRILLA -->
       <h2>Componentes posibles</h2>
-      <p class="ayuda">Tocá un componente para descartarlo.</p>
+      <p class="ayuda">Tocá un componente para descartarlo o el botón ℹ️ para ver qué es.</p>
 
       <div id="grillaNumeros" class="grilla"></div>
 
@@ -116,7 +116,7 @@
 
   </main>
 
-  <!-- VENTANA DE AYUDA -->
+  <!-- VENTANA DE AYUDA DE PREGUNTAS -->
   <div id="modalPreguntas" class="modal-preguntas" aria-hidden="true">
     <div class="modal-preguntas-contenido" role="dialog" aria-modal="true" aria-labelledby="tituloModalPreguntas">
       <button id="btnCerrarPreguntas" class="cerrar-modal" aria-label="Cerrar ayuda">×</button>
@@ -129,6 +129,25 @@
       <div class="acciones-modal">
         <button id="btnOtrasPreguntas">Ver otras preguntas</button>
         <button id="btnCerrarPreguntasAbajo">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VENTANA DE FICHA TÉCNICA DEL COMPONENTE -->
+  <div id="modalFichaComponente" class="modal-preguntas" aria-hidden="true">
+    <div class="modal-preguntas-contenido ficha-contenido" role="dialog" aria-modal="true" aria-labelledby="tituloFicha">
+      <button id="btnCerrarFicha" class="cerrar-modal" aria-label="Cerrar ficha">×</button>
+      <h2 id="tituloFicha">Componente</h2>
+      
+      <div class="contenedor-imagen-ficha">
+        <div id="placeholderFicha" class="placeholder-ficha">⚡</div>
+        <img id="imagenFicha" src="" alt="" class="imagen-ficha" referrerpolicy="no-referrer">
+      </div>
+
+      <p id="descripcionFicha" class="descripcion-ficha"></p>
+
+      <div class="acciones-modal">
+        <button id="btnCerrarFichaAbajo">Cerrar</button>
       </div>
     </div>
   </div>
